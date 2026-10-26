@@ -1,0 +1,49 @@
+{
+  "dataset_type": "synthetic",
+  "description": "全部内容为项目开发合成样例，不对应真实个人或真实医疗机构。",
+  "members": [
+    {"id": "member_dad", "name": "爸爸", "aliases": ["父亲"]},
+    {"id": "member_mom", "name": "妈妈", "aliases": ["母亲"]}
+  ],
+  "reports": [
+    {
+      "id": "demo_dad_20260110",
+      "member_id": "member_dad",
+      "title": "爸爸 2026年1月检查报告（合成）",
+      "report_date": "2026-01-10",
+      "report_type": "体检报告",
+      "raw_text": "【合成测试报告】\n本报告仅供软件开发测试，不对应真实个人。\n成员：爸爸\n检查日期：2026-01-10\n\n【生化检查】\n空腹血糖：6.40 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.60 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.90 mmol/L；报告参考范围：0–1.70 mmol/L。\n\n【检查结论】\n本次空腹血糖、总胆固醇和甘油三酯超过本报告所列参考上限。仅凭本次结果不能确认疾病。\n\n【建议与备注】\n建议记录近期饮食与运动情况，并携带报告咨询医生，按医生意见安排复查。\n本报告未包含肾功能、尿酸或影像检查结果。",
+      "metrics": [
+        {"metric_code": "fasting_glucose", "metric_name": "空腹血糖", "value": "6.40", "unit": "mmol/L", "reference_range": "3.90–6.10 mmol/L", "source_text": "空腹血糖：6.40 mmol/L；报告参考范围：3.90–6.10 mmol/L。"},
+        {"metric_code": "total_cholesterol", "metric_name": "总胆固醇", "value": "5.60", "unit": "mmol/L", "reference_range": "0–5.20 mmol/L", "source_text": "总胆固醇：5.60 mmol/L；报告参考范围：0–5.20 mmol/L。"},
+        {"metric_code": "triglycerides", "metric_name": "甘油三酯", "value": "1.90", "unit": "mmol/L", "reference_range": "0–1.70 mmol/L", "source_text": "甘油三酯：1.90 mmol/L；报告参考范围：0–1.70 mmol/L。"}
+      ]
+    },
+    {
+      "id": "demo_dad_20260710",
+      "member_id": "member_dad",
+      "title": "爸爸 2026年7月复查报告（合成）",
+      "report_date": "2026-07-10",
+      "report_type": "复查报告",
+      "raw_text": "【合成测试报告】\n本报告仅供软件开发测试，不对应真实个人。\n成员：爸爸\n检查日期：2026-07-10\n\n【生化检查】\n空腹血糖：5.80 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.10 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.50 mmol/L；报告参考范围：0–1.70 mmol/L。\n\n【检查结论】\n本次三项指标均在本报告所列参考范围内。单次结果不能代替完整健康评估。\n\n【建议与备注】\n建议继续记录生活习惯，保留既往检查报告供医生对照，后续复查安排遵循医生意见。\n本报告未记录目前用药，也未记录肾功能或尿酸结果。",
+      "metrics": [
+        {"metric_code": "fasting_glucose", "metric_name": "空腹血糖", "value": "5.80", "unit": "mmol/L", "reference_range": "3.90–6.10 mmol/L", "source_text": "空腹血糖：5.80 mmol/L；报告参考范围：3.90–6.10 mmol/L。"},
+        {"metric_code": "total_cholesterol", "metric_name": "总胆固醇", "value": "5.10", "unit": "mmol/L", "reference_range": "0–5.20 mmol/L", "source_text": "总胆固醇：5.10 mmol/L；报告参考范围：0–5.20 mmol/L。"},
+        {"metric_code": "triglycerides", "metric_name": "甘油三酯", "value": "1.50", "unit": "mmol/L", "reference_range": "0–1.70 mmol/L", "source_text": "甘油三酯：1.50 mmol/L；报告参考范围：0–1.70 mmol/L。"}
+      ]
+    },
+    {
+      "id": "demo_mom_20260712",
+      "member_id": "member_mom",
+      "title": "妈妈 2026年7月检查报告（合成）",
+      "report_date": "2026-07-12",
+      "report_type": "体检报告",
+      "raw_text": "【合成测试报告】\n本报告仅供软件开发测试，不对应真实个人。\n成员：妈妈\n检查日期：2026-07-12\n\n【生化检查】\n空腹血糖：5.20 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.40 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.30 mmol/L；报告参考范围：0–1.70 mmol/L。\n\n【检查结论】\n本次总胆固醇超过本报告所列参考上限；空腹血糖、甘油三酯在本报告所列参考范围内。\n\n【建议与备注】\n建议将本次血脂结果与既往检查记录一并交给医生评估，并按医生意见安排后续检查。\n本报告未包含甲状腺或肾功能检查，也未记录用药方案。",
+      "metrics": [
+        {"metric_code": "fasting_glucose", "metric_name": "空腹血糖", "value": "5.20", "unit": "mmol/L", "reference_range": "3.90–6.10 mmol/L", "source_text": "空腹血糖：5.20 mmol/L；报告参考范围：3.90–6.10 mmol/L。"},
+        {"metric_code": "total_cholesterol", "metric_name": "总胆固醇", "value": "5.40", "unit": "mmol/L", "reference_range": "0–5.20 mmol/L", "source_text": "总胆固醇：5.40 mmol/L；报告参考范围：0–5.20 mmol/L。"},
+        {"metric_code": "triglycerides", "metric_name": "甘油三酯", "value": "1.30", "unit": "mmol/L", "reference_range": "0–1.70 mmol/L", "source_text": "甘油三酯：1.30 mmol/L；报告参考范围：0–1.70 mmol/L。"}
+      ]
+    }
+  ]
+}

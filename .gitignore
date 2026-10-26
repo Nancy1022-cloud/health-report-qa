@@ -1,0 +1,56 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+uploads/
+.DS_Store
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Uploaded reports and local backups
+uploads/
+_backup*/
+*.bak
+
+# Python environment and cache
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local databases and logs
+postgres_data/
+pgdata/
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.log
+logs/
+
+# Raw evaluation runs
+app/data/m7_runs/
+app/data/m3_backups/
+app/data/m2_baseline_*.json
+app/data/m3_compare_*.json
+app/data/m3_compare_*.md
+app/data/m4_smoke_*.json
+app/data/m5_smoke_*.json
+
+# Keep only the known synthetic upload samples
+samples/*
+!samples/m6_mom_synthetic.pdf
+!samples/m6_mom_synthetic.png
+
+# Local backups and editor settings
+/backups/
+/.vscode/
+
+# Working templates
+/README_M7.md
+/gitignore_m7.txt

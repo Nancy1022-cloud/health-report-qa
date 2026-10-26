@@ -1,0 +1,70 @@
+{
+  "dataset_type": "synthetic",
+  "purpose": "M2 开发冒烟基线；不是独立验收集。证据标注使用原文短句，与切分方案无关。",
+  "cases": [
+    {
+      "id": "m2_01", "member_id": "member_dad", "report_ids": ["demo_dad_20260110"],
+      "question": "爸爸2026年1月10日报告里的空腹血糖是多少？",
+      "answerable": true, "reference_answer": "6.40 mmol/L。",
+      "gold": [{"report_id": "demo_dad_20260110", "text": "空腹血糖：6.40 mmol/L"}]
+    },
+    {
+      "id": "m2_02", "member_id": "member_dad", "report_ids": ["demo_dad_20260710"],
+      "question": "爸爸2026年7月10日报告里的甘油三酯是多少？",
+      "answerable": true, "reference_answer": "1.50 mmol/L。",
+      "gold": [{"report_id": "demo_dad_20260710", "text": "甘油三酯：1.50 mmol/L"}]
+    },
+    {
+      "id": "m2_03", "member_id": "member_mom", "report_ids": ["demo_mom_20260712"],
+      "question": "妈妈2026年7月12日报告的总胆固醇是多少？",
+      "answerable": true, "reference_answer": "5.40 mmol/L。",
+      "gold": [{"report_id": "demo_mom_20260712", "text": "总胆固醇：5.40 mmol/L"}]
+    },
+    {
+      "id": "m2_04", "member_id": "member_dad", "report_ids": ["demo_dad_20260110"],
+      "question": "爸爸2026年1月10日报告建议记录哪些情况？",
+      "answerable": true, "reference_answer": "记录近期饮食与运动情况。",
+      "gold": [{"report_id": "demo_dad_20260110", "text": "建议记录近期饮食与运动情况"}]
+    },
+    {
+      "id": "m2_05", "member_id": "member_dad", "report_ids": ["demo_dad_20260710"],
+      "question": "爸爸7月报告为什么建议保留既往报告？",
+      "answerable": true, "reference_answer": "保留既往检查报告供医生对照。",
+      "gold": [{"report_id": "demo_dad_20260710", "text": "保留既往检查报告供医生对照"}]
+    },
+    {
+      "id": "m2_06", "member_id": "member_mom", "report_ids": ["demo_mom_20260712"],
+      "question": "妈妈这份报告的检查结论是什么？",
+      "answerable": true, "reference_answer": "总胆固醇超过报告参考上限；空腹血糖和甘油三酯在报告参考范围内。",
+      "gold": [{"report_id": "demo_mom_20260712", "text": "本次总胆固醇超过本报告所列参考上限；空腹血糖、甘油三酯在本报告所列参考范围内。"}]
+    },
+    {
+      "id": "m2_07", "member_id": "member_dad", "report_ids": null,
+      "question": "爸爸1月和7月的空腹血糖各是多少？请分别列出。",
+      "answerable": true, "reference_answer": "2026-01-10 为6.40 mmol/L，2026-07-10 为5.80 mmol/L。",
+      "gold": [
+        {"report_id": "demo_dad_20260110", "text": "空腹血糖：6.40 mmol/L"},
+        {"report_id": "demo_dad_20260710", "text": "空腹血糖：5.80 mmol/L"}
+      ]
+    },
+    {
+      "id": "m2_08", "member_id": "member_dad", "report_ids": null,
+      "question": "爸爸1月、7月两次报告的建议分别是什么？",
+      "answerable": true, "reference_answer": "1月：记录近期饮食与运动并携报告咨询医生；7月：记录生活习惯，保留既往报告供医生对照，遵医嘱复查。",
+      "gold": [
+        {"report_id": "demo_dad_20260110", "text": "建议记录近期饮食与运动情况，并携带报告咨询医生，按医生意见安排复查。"},
+        {"report_id": "demo_dad_20260710", "text": "建议继续记录生活习惯，保留既往检查报告供医生对照，后续复查安排遵循医生意见。"}
+      ]
+    },
+    {
+      "id": "m2_09", "member_id": "member_dad", "report_ids": ["demo_dad_20260710"],
+      "question": "爸爸2026年7月10日的尿酸具体数值是多少？",
+      "answerable": false, "reference_answer": "报告未记录尿酸数值，应说明资料不足。", "gold": []
+    },
+    {
+      "id": "m2_10", "member_id": "member_mom", "report_ids": ["demo_mom_20260712"],
+      "question": "妈妈这份报告里的具体用药方案是什么？",
+      "answerable": false, "reference_answer": "报告未记录用药方案，应说明资料不足。", "gold": []
+    }
+  ]
+}

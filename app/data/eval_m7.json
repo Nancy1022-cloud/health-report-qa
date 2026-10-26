@@ -1,0 +1,667 @@
+{
+  "dataset_type": "synthetic",
+  "version": "m7_v1",
+  "cases": [
+    {
+      "id": "m7_01",
+      "category": "记录",
+      "request": {
+        "question": "验收甲在选定范围内最新一次空腹血糖是多少？",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20260115",
+          "m7_a_20260315",
+          "m7_a_20260515",
+          "m7_a_20260715",
+          "m7_a_20260915",
+          "m7_a_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "get_metric_trend"
+      ],
+      "gold": [
+        {
+          "kind": "metric",
+          "report_id": "m7_a_20261015",
+          "metric_code": "fasting_glucose",
+          "text": "空腹血糖：5.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        }
+      ],
+      "reference_answer": "2026-10-15：5.30 mmol/L。",
+      "manual_focus": [
+        "最新记录和日期参数正确"
+      ]
+    },
+    {
+      "id": "m7_02",
+      "category": "记录",
+      "request": {
+        "question": "验收甲1月15日与10月15日的空腹血糖各是多少，末次减首次是多少？",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20260115",
+          "m7_a_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "get_metric_trend"
+      ],
+      "gold": [
+        {
+          "kind": "metric",
+          "report_id": "m7_a_20260115",
+          "metric_code": "fasting_glucose",
+          "text": "空腹血糖：6.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "kind": "metric",
+          "report_id": "m7_a_20261015",
+          "metric_code": "fasting_glucose",
+          "text": "空腹血糖：5.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        }
+      ],
+      "reference_answer": "6.30→5.30 mmol/L；末次减首次 -1.00 mmol/L。",
+      "manual_focus": [
+        "差值来自工具comparison，两个日期归属正确"
+      ]
+    },
+    {
+      "id": "m7_03",
+      "category": "记录",
+      "request": {
+        "question": "验收乙最近两次空腹血糖是多少？能直接计算差值吗？",
+        "member_ids": [
+          "m7_member_b"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_b_20260915",
+          "m7_b_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered",
+        "partial"
+      ],
+      "required_tools": [
+        "get_metric_trend"
+      ],
+      "gold": [
+        {
+          "kind": "metric",
+          "report_id": "m7_b_20260915",
+          "metric_code": "fasting_glucose",
+          "text": "空腹血糖：5.60 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "kind": "metric",
+          "report_id": "m7_b_20261015",
+          "metric_code": "fasting_glucose",
+          "text": "空腹血糖：95.00 mg/dL；报告参考范围：70.00–110.00 mg/dL。"
+        }
+      ],
+      "reference_answer": "2026-09-15为5.60 mmol/L，2026-10-15为95.00 mg/dL；单位不同，本版不能直接算差值。",
+      "manual_focus": [
+        "不得自行换算或直接相减"
+      ]
+    },
+    {
+      "id": "m7_04",
+      "category": "记录",
+      "request": {
+        "question": "验收甲7月15日的总胆固醇是多少？",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20260715"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "get_metric_trend"
+      ],
+      "gold": [
+        {
+          "kind": "metric",
+          "report_id": "m7_a_20260715",
+          "metric_code": "total_cholesterol",
+          "text": "总胆固醇：5.40 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        }
+      ],
+      "reference_answer": "5.40 mmol/L。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_05",
+      "category": "记录",
+      "request": {
+        "question": "验收乙5月15日的甘油三酯是多少？",
+        "member_ids": [
+          "m7_member_b"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_b_20260515"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "get_metric_trend"
+      ],
+      "gold": [
+        {
+          "kind": "metric",
+          "report_id": "m7_b_20260515",
+          "metric_code": "triglycerides",
+          "text": "甘油三酯：1.80 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "reference_answer": "1.80 mmol/L。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_06",
+      "category": "原文",
+      "request": {
+        "question": "验收甲5月15日报告要求复查携带什么？",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20260515"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "search_reports"
+      ],
+      "gold": [
+        {
+          "kind": "chunk",
+          "report_id": "m7_a_20260515",
+          "text": "复查时携带2026-05-15这份报告，并保留编号甲03的饮食记录供医生对照。"
+        }
+      ],
+      "reference_answer": "复查时携带2026-05-15这份报告，并保留编号甲03的饮食记录供医生对照。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_07",
+      "category": "原文",
+      "request": {
+        "question": "验收乙9月15日报告的检查结论是什么？",
+        "member_ids": [
+          "m7_member_b"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_b_20260915"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "search_reports"
+      ],
+      "gold": [
+        {
+          "kind": "chunk",
+          "report_id": "m7_b_20260915",
+          "text": "记录标记为乙05；本页仅汇总三项生化记录，不据此作疾病诊断。"
+        }
+      ],
+      "reference_answer": "记录标记为乙05；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_08",
+      "category": "组合",
+      "request": {
+        "question": "分别列出验收甲1月15日和7月15日报告的建议与备注。",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20260115",
+          "m7_a_20260715"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "search_reports"
+      ],
+      "gold": [
+        {
+          "kind": "chunk",
+          "report_id": "m7_a_20260115",
+          "text": "复查时携带2026-01-15这份报告，并保留编号甲01的饮食记录供医生对照。"
+        },
+        {
+          "kind": "chunk",
+          "report_id": "m7_a_20260715",
+          "text": "复查时携带2026-07-15这份报告，并保留编号甲04的饮食记录供医生对照。"
+        }
+      ],
+      "reference_answer": "复查时携带2026-01-15这份报告，并保留编号甲01的饮食记录供医生对照。\n复查时携带2026-07-15这份报告，并保留编号甲04的饮食记录供医生对照。",
+      "manual_focus": [
+        "两份报告均有建议证据，不能只查一侧"
+      ]
+    },
+    {
+      "id": "m7_09",
+      "category": "组合",
+      "request": {
+        "question": "验收甲、验收乙10月15日报告的复查携带材料分别是什么？",
+        "member_ids": [
+          "m7_member_a",
+          "m7_member_b"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20261015",
+          "m7_b_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "search_reports"
+      ],
+      "gold": [
+        {
+          "kind": "chunk",
+          "report_id": "m7_a_20261015",
+          "text": "复查时携带2026-10-15这份报告，并保留编号甲06的饮食记录供医生对照。"
+        },
+        {
+          "kind": "chunk",
+          "report_id": "m7_b_20261015",
+          "text": "复查时携带2026-10-15这份报告，并保留编号乙06的饮食记录供医生对照。"
+        }
+      ],
+      "reference_answer": "复查时携带2026-10-15这份报告，并保留编号甲06的饮食记录供医生对照。\n复查时携带2026-10-15这份报告，并保留编号乙06的饮食记录供医生对照。",
+      "manual_focus": [
+        "甲06和乙06分别归属，不能推断谁更健康"
+      ]
+    },
+    {
+      "id": "m7_10",
+      "category": "组合",
+      "request": {
+        "question": "对比验收甲1月15日和10月15日的空腹血糖数值，并分别列出两份报告的备注。",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20260115",
+          "m7_a_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "get_metric_trend",
+        "search_reports"
+      ],
+      "gold": [
+        {
+          "kind": "metric",
+          "report_id": "m7_a_20260115",
+          "metric_code": "fasting_glucose",
+          "text": "空腹血糖：6.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "kind": "metric",
+          "report_id": "m7_a_20261015",
+          "metric_code": "fasting_glucose",
+          "text": "空腹血糖：5.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "kind": "chunk",
+          "report_id": "m7_a_20260115",
+          "text": "复查时携带2026-01-15这份报告，并保留编号甲01的饮食记录供医生对照。"
+        },
+        {
+          "kind": "chunk",
+          "report_id": "m7_a_20261015",
+          "text": "复查时携带2026-10-15这份报告，并保留编号甲06的饮食记录供医生对照。"
+        }
+      ],
+      "reference_answer": "6.30与5.30 mmol/L；复查时携带2026-01-15这份报告，并保留编号甲01的饮食记录供医生对照。\n复查时携带2026-10-15这份报告，并保留编号甲06的饮食记录供医生对照。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_11",
+      "category": "目录",
+      "request": {
+        "question": "列出验收乙在2026年9月1日至10月31日的报告日期和类型。",
+        "member_ids": [
+          "m7_member_b"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_b_20260115",
+          "m7_b_20260315",
+          "m7_b_20260515",
+          "m7_b_20260715",
+          "m7_b_20260915",
+          "m7_b_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "get_report_list"
+      ],
+      "gold": [
+        {
+          "kind": "report",
+          "report_id": "m7_b_20260915"
+        },
+        {
+          "kind": "report",
+          "report_id": "m7_b_20261015"
+        }
+      ],
+      "reference_answer": "2026-09-15、2026-10-15，两份均为复查报告。",
+      "manual_focus": [
+        "核对start_date/end_date，不能把其他月份混入回答"
+      ]
+    },
+    {
+      "id": "m7_12",
+      "category": "目录",
+      "request": {
+        "question": "验收甲选定范围内有哪些体检报告？请列日期。",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20260115",
+          "m7_a_20260315",
+          "m7_a_20260515",
+          "m7_a_20260715",
+          "m7_a_20260915",
+          "m7_a_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "get_report_list"
+      ],
+      "gold": [
+        {
+          "kind": "report",
+          "report_id": "m7_a_20260115"
+        }
+      ],
+      "reference_answer": "2026-01-15，体检报告。",
+      "manual_focus": [
+        "report_type为体检报告"
+      ]
+    },
+    {
+      "id": "m7_13",
+      "category": "缺失",
+      "request": {
+        "question": "验收甲10月15日的尿酸具体数值是多少？",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "insufficient"
+      ],
+      "required_tools": [],
+      "gold": [],
+      "reference_answer": "未记录尿酸数值，应说明资料不足。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_14",
+      "category": "缺失",
+      "request": {
+        "question": "验收乙10月15日报告写的具体用药剂量是多少？",
+        "member_ids": [
+          "m7_member_b"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_b_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "insufficient"
+      ],
+      "required_tools": [],
+      "gold": [],
+      "reference_answer": "未记录用药剂量，应说明资料不足。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_15",
+      "category": "部分",
+      "request": {
+        "question": "验收甲10月15日的空腹血糖和尿酸分别是多少？",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "partial"
+      ],
+      "required_tools": [],
+      "gold": [
+        {
+          "kind": "metric",
+          "report_id": "m7_a_20261015",
+          "metric_code": "fasting_glucose",
+          "text": "空腹血糖：5.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        }
+      ],
+      "reference_answer": "血糖5.30 mmol/L；尿酸数值未记录。",
+      "manual_focus": [
+        "已知部分必须回答，缺失部分不能编造"
+      ]
+    },
+    {
+      "id": "m7_16",
+      "category": "澄清",
+      "request": {
+        "question": "最新一次空腹血糖是多少？",
+        "member_ids": [],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid"
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "clarify"
+      ],
+      "required_tools": [],
+      "gold": [],
+      "reference_answer": "先询问是哪位成员。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_17",
+      "category": "澄清",
+      "request": {
+        "question": "他最新一次空腹血糖是多少？",
+        "member_ids": [
+          "m7_member_a",
+          "m7_member_b"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_a_20261015",
+          "m7_b_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "clarify"
+      ],
+      "required_tools": [],
+      "gold": [],
+      "reference_answer": "选中两位成员，‘他’不明确，需澄清。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_18",
+      "category": "隔离",
+      "request": {
+        "question": "查询这份报告的血糖。",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_b_20261015"
+        ]
+      },
+      "expected_http": 404,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [],
+      "gold": [],
+      "reference_answer": "成员甲与成员乙的报告不匹配，应在后端拒绝。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_19",
+      "category": "隔离",
+      "request": {
+        "question": "查询这份报告的血糖。",
+        "member_ids": [
+          "m7_member_a"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_report_does_not_exist"
+        ]
+      },
+      "expected_http": 404,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [],
+      "gold": [],
+      "reference_answer": "不存在的报告应返回404，不能当作无记录。",
+      "manual_focus": []
+    },
+    {
+      "id": "m7_20",
+      "category": "记录",
+      "request": {
+        "question": "验收乙1月15日至10月15日总胆固醇首末数值及变化是多少？",
+        "member_ids": [
+          "m7_member_b"
+        ],
+        "chunk_version": "section200o40v1",
+        "retrieval_mode": "hybrid",
+        "report_ids": [
+          "m7_b_20260115",
+          "m7_b_20261015"
+        ]
+      },
+      "expected_http": 200,
+      "expected_statuses": [
+        "answered"
+      ],
+      "required_tools": [
+        "get_metric_trend"
+      ],
+      "gold": [
+        {
+          "kind": "metric",
+          "report_id": "m7_b_20260115",
+          "metric_code": "total_cholesterol",
+          "text": "总胆固醇：5.80 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "kind": "metric",
+          "report_id": "m7_b_20261015",
+          "metric_code": "total_cholesterol",
+          "text": "总胆固醇：5.30 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        }
+      ],
+      "reference_answer": "5.80→5.30 mmol/L；末次减首次 -0.50 mmol/L。",
+      "manual_focus": []
+    }
+  ]
+}

@@ -1,0 +1,454 @@
+{
+  "dataset_type": "synthetic",
+  "version": "m7_v1",
+  "members": [
+    {
+      "id": "m7_member_a",
+      "name": "验收甲",
+      "aliases": [
+        "测试甲"
+      ]
+    },
+    {
+      "id": "m7_member_b",
+      "name": "验收乙",
+      "aliases": [
+        "测试乙"
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "id": "m7_a_20260115",
+      "member_id": "m7_member_a",
+      "title": "验收甲 2026-01-15 合成验收报告",
+      "report_date": "2026-01-15",
+      "report_type": "体检报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收甲；日期：2026-01-15。\n【生化检查】\n空腹血糖：6.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.70 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.80 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为甲01；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-01-15这份报告，并保留编号甲01的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "6.30",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：6.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.70",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.70 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.80",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.80 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为甲01；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-01-15这份报告，并保留编号甲01的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_a_20260315",
+      "member_id": "m7_member_a",
+      "title": "验收甲 2026-03-15 合成验收报告",
+      "report_date": "2026-03-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收甲；日期：2026-03-15。\n【生化检查】\n空腹血糖：6.10 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.60 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.75 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为甲02；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-03-15这份报告，并保留编号甲02的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "6.10",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：6.10 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.60",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.60 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.75",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.75 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为甲02；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-03-15这份报告，并保留编号甲02的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_a_20260515",
+      "member_id": "m7_member_a",
+      "title": "验收甲 2026-05-15 合成验收报告",
+      "report_date": "2026-05-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收甲；日期：2026-05-15。\n【生化检查】\n空腹血糖：5.90 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.50 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.70 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为甲03；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-05-15这份报告，并保留编号甲03的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "5.90",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：5.90 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.50",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.50 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.70",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.70 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为甲03；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-05-15这份报告，并保留编号甲03的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_a_20260715",
+      "member_id": "m7_member_a",
+      "title": "验收甲 2026-07-15 合成验收报告",
+      "report_date": "2026-07-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收甲；日期：2026-07-15。\n【生化检查】\n空腹血糖：5.70 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.40 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.65 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为甲04；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-07-15这份报告，并保留编号甲04的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "5.70",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：5.70 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.40",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.40 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.65",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.65 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为甲04；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-07-15这份报告，并保留编号甲04的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_a_20260915",
+      "member_id": "m7_member_a",
+      "title": "验收甲 2026-09-15 合成验收报告",
+      "report_date": "2026-09-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收甲；日期：2026-09-15。\n【生化检查】\n空腹血糖：5.50 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.30 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.60 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为甲05；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-09-15这份报告，并保留编号甲05的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "5.50",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：5.50 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.30",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.30 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.60",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.60 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为甲05；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-09-15这份报告，并保留编号甲05的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_a_20261015",
+      "member_id": "m7_member_a",
+      "title": "验收甲 2026-10-15 合成验收报告",
+      "report_date": "2026-10-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收甲；日期：2026-10-15。\n【生化检查】\n空腹血糖：5.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.20 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.55 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为甲06；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-10-15这份报告，并保留编号甲06的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "5.30",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：5.30 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.20",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.20 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.55",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.55 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为甲06；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-10-15这份报告，并保留编号甲06的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_b_20260115",
+      "member_id": "m7_member_b",
+      "title": "验收乙 2026-01-15 合成验收报告",
+      "report_date": "2026-01-15",
+      "report_type": "体检报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收乙；日期：2026-01-15。\n【生化检查】\n空腹血糖：6.40 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.80 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.90 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为乙01；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-01-15这份报告，并保留编号乙01的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "6.40",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：6.40 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.80",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.80 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.90",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.90 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为乙01；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-01-15这份报告，并保留编号乙01的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_b_20260315",
+      "member_id": "m7_member_b",
+      "title": "验收乙 2026-03-15 合成验收报告",
+      "report_date": "2026-03-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收乙；日期：2026-03-15。\n【生化检查】\n空腹血糖：6.20 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.70 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.85 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为乙02；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-03-15这份报告，并保留编号乙02的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "6.20",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：6.20 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.70",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.70 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.85",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.85 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为乙02；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-03-15这份报告，并保留编号乙02的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_b_20260515",
+      "member_id": "m7_member_b",
+      "title": "验收乙 2026-05-15 合成验收报告",
+      "report_date": "2026-05-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收乙；日期：2026-05-15。\n【生化检查】\n空腹血糖：6.00 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.60 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.80 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为乙03；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-05-15这份报告，并保留编号乙03的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "6.00",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：6.00 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.60",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.60 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.80",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.80 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为乙03；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-05-15这份报告，并保留编号乙03的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_b_20260715",
+      "member_id": "m7_member_b",
+      "title": "验收乙 2026-07-15 合成验收报告",
+      "report_date": "2026-07-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收乙；日期：2026-07-15。\n【生化检查】\n空腹血糖：5.80 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.50 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.75 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为乙04；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-07-15这份报告，并保留编号乙04的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "5.80",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：5.80 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.50",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.50 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.75",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.75 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为乙04；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-07-15这份报告，并保留编号乙04的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_b_20260915",
+      "member_id": "m7_member_b",
+      "title": "验收乙 2026-09-15 合成验收报告",
+      "report_date": "2026-09-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收乙；日期：2026-09-15。\n【生化检查】\n空腹血糖：5.60 mmol/L；报告参考范围：3.90–6.10 mmol/L。\n总胆固醇：5.40 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.70 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为乙05；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-09-15这份报告，并保留编号乙05的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "5.60",
+          "unit": "mmol/L",
+          "reference_range": "3.90–6.10 mmol/L",
+          "source_text": "空腹血糖：5.60 mmol/L；报告参考范围：3.90–6.10 mmol/L。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.40",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.40 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.70",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.70 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为乙05；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-09-15这份报告，并保留编号乙05的饮食记录供医生对照。"
+    },
+    {
+      "id": "m7_b_20261015",
+      "member_id": "m7_member_b",
+      "title": "验收乙 2026-10-15 合成验收报告",
+      "report_date": "2026-10-15",
+      "report_type": "复查报告",
+      "raw_text": "【合成验收报告】\n仅供软件测试，不对应真实个人。成员：验收乙；日期：2026-10-15。\n【生化检查】\n空腹血糖：95.00 mg/dL；报告参考范围：70.00–110.00 mg/dL。\n总胆固醇：5.30 mmol/L；报告参考范围：0–5.20 mmol/L。\n甘油三酯：1.65 mmol/L；报告参考范围：0–1.70 mmol/L。\n【检查结论】\n记录标记为乙06；本页仅汇总三项生化记录，不据此作疾病诊断。\n【建议与备注】\n复查时携带2026-10-15这份报告，并保留编号乙06的饮食记录供医生对照。\n未记录尿酸数值或用药剂量。",
+      "metrics": [
+        {
+          "metric_code": "fasting_glucose",
+          "metric_name": "空腹血糖",
+          "value": "95.00",
+          "unit": "mg/dL",
+          "reference_range": "70.00–110.00 mg/dL",
+          "source_text": "空腹血糖：95.00 mg/dL；报告参考范围：70.00–110.00 mg/dL。"
+        },
+        {
+          "metric_code": "total_cholesterol",
+          "metric_name": "总胆固醇",
+          "value": "5.30",
+          "unit": "mmol/L",
+          "reference_range": "0–5.20 mmol/L",
+          "source_text": "总胆固醇：5.30 mmol/L；报告参考范围：0–5.20 mmol/L。"
+        },
+        {
+          "metric_code": "triglycerides",
+          "metric_name": "甘油三酯",
+          "value": "1.65",
+          "unit": "mmol/L",
+          "reference_range": "0–1.70 mmol/L",
+          "source_text": "甘油三酯：1.65 mmol/L；报告参考范围：0–1.70 mmol/L。"
+        }
+      ],
+      "finding": "记录标记为乙06；本页仅汇总三项生化记录，不据此作疾病诊断。",
+      "advice": "复查时携带2026-10-15这份报告，并保留编号乙06的饮食记录供医生对照。"
+    }
+  ]
+}
