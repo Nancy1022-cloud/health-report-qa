@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>健康报告 · 上传与核对</title>
+<style>
+body{font-family:system-ui,"Microsoft YaHei",sans-serif;max-width:1100px;margin:32px auto;padding:0 20px;color:#17343e;background:#f5f8f8}h1{font-size:27px}h2{font-size:19px;margin-top:0}section{background:white;border:1px solid #d9e4e4;border-radius:12px;padding:22px;margin:18px 0}label{display:block;margin:13px 0 6px}input,select,textarea,button{box-sizing:border-box;font:inherit;padding:9px;border:1px solid #bfcfcf;border-radius:6px}textarea{width:100%;resize:vertical;line-height:1.6}button{cursor:pointer;background:#0c665e;color:white;margin:8px 8px 8px 0;border:0}button:disabled{cursor:wait;opacity:.5}.plain{background:#e9efef;color:#17343e}input[type=text]{width:100%}.grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px}.hint{color:#52696f;font-size:14px;line-height:1.7}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:940px}th,td{text-align:left;padding:6px;border-bottom:1px solid #e1e9e9;vertical-align:top;font-size:14px}td input,td textarea{width:100%;min-width:95px;padding:7px}td textarea{min-width:190px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f5;padding:12px;border-radius:6px;max-height:460px;overflow:auto}#status{white-space:pre-wrap;line-height:1.65;padding:12px}a{color:#0c665e}.check{display:flex;gap:9px;align-items:flex-start}.check input{margin-top:4px}.badge{background:#e4f2ed;padding:5px 10px;border-radius:20px;font-size:13px}details{margin-top:14px}summary{cursor:pointer}#answer{white-space:pre-wrap;line-height:1.8}@media(max-width:700px){.grid{grid-template-columns:1fr}section{padding:16px}body{padding:0 12px;margin:20px auto}}
+input[type=file]{max-width:100%}
+</style>
+</head>
+<body>
+<h1>健康报告 · 上传与核对 <span class="badge">M10</span></h1>
+<p class="hint">选择成员，上传报告，核对后保存。问答沿用 M5 的工具与证据检查。</p>
+<section>
+<h2>1. 上传报告</h2>
+<label for="member">报告属于哪位成员？</label><select id="member"><option value="">请选择成员</option></select>
+<label for="file">文字型 PDF / PNG / JPG</label><input id="file" type="file" accept=".pdf,.png,.jpg,.jpeg">
+<p class="hint">单个文件最多 8 MiB；PDF 最多 5 页。文件内容将发送到你配置的抽取模型。扫描 PDF 请先转为图片。</p>
+<button id="upload">上传并抽取</button>
+<details><summary>重新打开已有上传</summary><label for="draftId">上传 ID</label><input id="draftId" type="text" placeholder="upload_…"><button id="load" class="plain">打开</button></details>
+</section>
+<div id="status" role="status" aria-live="polite"></div>
+<section id="reviewPanel" hidden>
+<h2>2. 对照原件核对</h2>
+<p id="identity" class="hint"></p><a id="original" target="_blank" rel="noopener">打开原始文件</a>
+<pre id="warnings" hidden></pre>
+<div class="grid"><div><label for="title">标题</label><input id="title" type="text" maxlength="160"></div>
+<div><label for="date">检查日期</label><input id="date" type="date"></div>
+<div><label for="type">报告类型</label><input id="type" type="text" maxlength="80"></div></div>
+<label for="text">核对文本（用于 RAG；识别错误可在此修正）</label><textarea id="text" rows="11" maxlength="8000"></textarea>
+<details><summary>首次提取的文本（保留用于对照）</summary><pre id="extracted"></pre></details>
+<p class="hint">核对指标、数值、单位和来源原句。缺少的行可补充，错误行可删除。来源原句需逐字存在于上方核对文本；没有结构化指标的报告也可保存全文。</p>
+<div class="scroll"><table><thead><tr><th>指标名</th><th>metric_code</th><th>结果</th><th>单位</th><th>参考范围</th><th>来源原句</th><th>操作</th></tr></thead><tbody id="metrics"></tbody></table></div>
+<button id="add" class="plain">添加指标行</button>
+<label class="check"><input id="reviewed" type="checkbox"><span>我已对照原件核对成员、日期、报告文本及指标。</span></label>
+<div id="revisionReason" hidden><label for="reason">本次修订原因</label><input id="reason" type="text" maxlength="500"></div>
+<button id="confirm" disabled>确认并建立索引</button>
+<p class="hint">建索引可能需要一两分钟。失败后可以保留当前核对内容重试；确认后可按当前版本修订；修订失败会保留已保存的版本。</p>
+</section>
+<section id="historyPanel" hidden><h2>版本与来源</h2><p class="hint">修订会保留首次抽取和历史确认记录。查询使用保存成功的版本。</p><button id="edit" class="plain">修订已确认内容</button><button id="history" class="plain">查看来源与修订记录</button><pre id="historyResult" hidden></pre></section>
+<section id="qaPanel" hidden>
+<h2>3. 查询刚上传的报告</h2>
+<p class="hint">本次查询固定使用上传时选定的成员和这份报告。</p>
+<label for="question">问题</label><textarea id="question" rows="2" maxlength="1000">这份报告的空腹血糖是多少？</textarea>
+<button id="ask">提问</button><div id="answer"></div>
+<details><summary>完整回答、引用与调用统计</summary><pre id="response"></pre><a id="trace" target="_blank" rel="noopener" hidden>打开本次问答日志</a></details>
+</section>
+<script>
+const $=id=>document.getElementById(id);
+let current=null,busy=false,editing=false,writeAttempt=null;
+const fields=['metric_name','metric_code','value','unit','reference_range','source_text'];
+function message(text,error=false){$('status').textContent=text;$('status').style.color=error?'#9b3030':'#175b4c';}
+function setBusy(value){busy=value;for(const id of ['upload','load','ask'])$(id).disabled=value;for(const el of $('reviewPanel').querySelectorAll('input,textarea,button'))el.disabled=value||(current?.status==='confirmed'&&!editing);$('confirm').disabled=value||!$('reviewed').checked||(current?.status==='confirmed'&&!editing);$('member').disabled=value;$('file').disabled=value;}
+async function request(url,options={}){const response=await fetch(url,{cache:'no-store',...options});const data=await response.json();if(!response.ok){if(data.code&&data.message){throw new Error(`${data.message}\n错误码：${data.code}\n请求编号：${data.request_id??response.headers.get('X-Request-ID')??'未提供'}`);}const e=data.detail??data;throw new Error(typeof e==='string'?e:JSON.stringify(e,null,2));}return data;}
+function addRow(data={}){const row=document.createElement('tr');for(const key of fields){const cell=document.createElement('td');const input=document.createElement(key==='source_text'?'textarea':'input');if(key!=='source_text')input.type='text';input.dataset.key=key;input.value=data[key]??'';if(key==='source_text')input.rows=2;cell.append(input);row.append(cell);}const cell=document.createElement('td');const button=document.createElement('button');button.textContent='删除';button.className='plain';button.type='button';button.onclick=()=>row.remove();cell.append(button);row.append(cell);$('metrics').append(row);}
+function render(data){editing=false;writeAttempt=null;current=data;$('revisionReason').hidden=true;$('reason').value='';$('confirm').textContent='确认并建立索引';$('historyPanel').hidden=data.status!=='confirmed';$('historyResult').hidden=true;$('reviewPanel').hidden=false;$('qaPanel').hidden=data.status!=='confirmed';$('identity').textContent=`成员：${data.member_id} ｜ 上传 ID：${data.id} ｜ 状态：${data.status} ｜ 已保存版本：${data.report_version??"待确认"}`;$('draftId').value=data.id;$('original').href=data.file_url;$('title').value=data.title;$('date').value=data.report_date??'';$('type').value=data.report_type;$('text').value=data.raw_text;$('extracted').textContent=data.extracted_text??data.raw_text;$('warnings').textContent=(data.warnings??[]).join('\n');$('warnings').hidden=!$('warnings').textContent;$('metrics').replaceChildren();for(const m of data.metrics)addRow(m);$('reviewed').checked=false;for(const el of $('reviewPanel').querySelectorAll('input,textarea,button'))el.disabled=data.status==='confirmed';$('confirm').disabled=true;$('answer').textContent='';$('response').textContent='';$('trace').hidden=true;}
+async function run(action){if(busy)return;setBusy(true);try{await action();}catch(e){message(e.message,true);}finally{setBusy(false);}}
+$('upload').onclick=()=>run(async()=>{if(!$('member').value||!$('file').files[0])throw new Error('请选择成员和文件。');message('正在读取报告并抽取候选字段…');const form=new FormData();form.append('member_id',$('member').value);form.append('file',$('file').files[0]);const data=await request('/api/ingest/upload',{method:'POST',body:form});render(data);message(data.upload_reused?'已复用已有上传记录，当前保存状态见上方。':'抽取完成，请对照原件核对后确认。');});
+$('load').onclick=()=>run(async()=>{if(!$('member').value)throw new Error('请先选择成员。');const data=await request(`/api/ingest/${encodeURIComponent($('draftId').value.trim())}?member_id=${encodeURIComponent($('member').value)}`);render(data);message('已打开上传记录。');});
+$('reviewed').onchange=()=>setBusy(busy);
+$('add').onclick=()=>addRow();
+$('confirm').onclick=()=>run(async()=>{if(!current||!$('reviewed').checked)throw new Error('请先完成核对并勾选确认。');if(!$('date').value)throw new Error('请填写明确的检查日期。');const metrics=[...$('metrics').rows].map(row=>Object.fromEntries(fields.map(key=>[key,row.querySelector(`[data-key="${key}"]`).value])));for(const m of metrics)if(!m.reference_range)m.reference_range=null;const body={title:$('title').value,report_date:$('date').value,report_type:$('type').value,raw_text:$('text').value,metrics,reviewed:true};message('正在为这份报告建立两种版本的索引，请等待…');const payload=editing?{expected_version:current.report_version,reason:$('reason').value,review:body}:body;if(editing&&!payload.reason.trim())throw new Error('请填写修订原因。');const serialized=JSON.stringify(payload);if(!writeAttempt||writeAttempt.body!==serialized)writeAttempt={body:serialized,key:crypto.randomUUID()};const url=editing?`/api/reports/${current.id}/revisions`:`/api/ingest/${current.id}/confirm`;const data=await request(`${url}?member_id=${encodeURIComponent(current.member_id)}`,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':writeAttempt.key},body:serialized});const saved=await request(`/api/ingest/${current.id}?member_id=${encodeURIComponent(current.member_id)}`);render(saved);message('确认成功。报告、指标和索引已保存，可以提问。\n'+JSON.stringify(data,null,2));});
+$('ask').onclick=()=>run(async()=>{if(!current||current.status!=='confirmed')throw new Error('请先确认报告。');if(!$('question').value.trim())throw new Error('请填写问题。');message('正在调用工具查询本报告…');$('answer').textContent='';$('trace').hidden=true;const data=await request('/api/agent/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:$('question').value.trim(),member_ids:[current.member_id],report_ids:[current.id],chunk_version:'section200o40v1',retrieval_mode:'hybrid'})});$('answer').textContent=data.answer??JSON.stringify(data);$('response').textContent=JSON.stringify(data,null,2);if(data.query_id){$('trace').href=`/api/query/${encodeURIComponent(data.query_id)}/trace`;$('trace').hidden=false;}message('问答完成，来源和状态见下方。');});
+$('edit').onclick=()=>{if(!current||busy)return;editing=true;$('revisionReason').hidden=false;$('reviewed').checked=false;$('confirm').textContent='保存修订并重建索引';setBusy(false);message('请对照原件修改内容、填写修订原因并重新勾选核对。');};
+$('history').onclick=()=>run(async()=>{const data=await request(`/api/reports/${current.id}/provenance?member_id=${encodeURIComponent(current.member_id)}`);$('historyResult').textContent=JSON.stringify(data,null,2);$('historyResult').hidden=false;message('已读取首次抽取与各次确认记录。');});
+request('/api/ingest/members').then(data=>{for(const m of data){const option=document.createElement('option');option.value=m.id;option.textContent=m.name;$('member').append(option);}}).catch(e=>message(e.message,true));
+</script>
+</body></html>

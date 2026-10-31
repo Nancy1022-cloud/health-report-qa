@@ -1,131 +1,64 @@
-﻿# 健康报告智能检索问答
+# 健康报告智能检索问答
 
-从零开发的家庭健康资料查询原型。上传时选择成员，抽取后人工核对日期、数值与单位，再查询已确认指标和报告原文，回答保留来源。第一版用于资料整理与查询。
+将合成／脱敏健康报告上传并人工核对后，按家庭成员查询指标和报告原文，回答附引用。本项目重点验证报告写入与修订的一致性，以及文档处理任务中断后的恢复。
 
-## 实现范围
+技术栈：Python 3.12、FastAPI、Pydantic、PostgreSQL 16 + pgvector、OpenAI 兼容接口、Docker Compose。API 与单个独立 worker 共享数据库和上传目录。
 
-- FastAPI、单文件 HTML、PostgreSQL 16 与 pgvector，Docker Compose 两个服务。
-- 固定切分与章节切分并存；中文分词后做 PostgreSQL 全文检索，与向量排名通过 RRF 融合。
-- 三个真实工具：`get_report_list`、`get_metric_trend`、`search_reports`。成员和报告范围由后端校验。
-- 模型选择工具并生成参数；查询与同单位差值由程序执行。单位不同不直接相减。
-- 工具循环最多执行 6 次工具、10 次模型请求；补检索最多一次、回答修订最多一次，总流程等待预算为 120 秒，日志写入另有 10 秒等待预算。
-- 对单成员、单报告、单指标且符合条件的纯数值问题可直接按结构化记录组织回答；其他问题按证据需求检查。
-- PDF 文字提取、图片识别、草稿核对和确认入库；未确认草稿不进入问答范围。
-- `query_logs` 保存工具参数、结果、检索过程、纠错事件和接口返回用量。
+## 工程设计
 
-全文检索使用 PostgreSQL 排名函数，不称为 BM25；应用层证据检查与有限纠错不宣称复现论文版 Self-RAG。成员过滤用于单家庭演示中的数据归属约束。
+- Router / Schema / Service / Repository / Client 分层；核心业务可通过注入替身独立验证。统一参数、业务冲突、上游失败和内部错误响应，并以 request_id 关联日志。
+- 报告正文、指标、索引、修订快照与回执在写事务中保持版本关系。相同内容重放复用，内容冲突明确拒绝；数据库约束和提交前复查处理并发确认。
+- 持久化任务保存处理代次、阶段结果、调用预留和终态；租约与执行 token 阻止旧执行提交。外部请求放在写事务之外，有限重试共用任务预算。
+- 分阶段计时保留重叠区间；任务完成耗时包含排队与重试。缺失 usage 保留未知。故障窗口可能导致外部请求重发，不声称外部接口 exactly-once。
+
+## 当前证据
+
+以下数字由本机验收记录生成，具体机器、参数和原始记录另存于阶段证据目录。
+
+| 项目 | 本次记录 | 口径 |
+| --- | --- | --- |
+| 离线自动化测试 | 317 | unittest 测试方法数量，含业务、引用、契约、任务与交付门槛 |
+| 数据库探针断言 | 103 | 多个探针的检查项总数，不能解释为同数量独立业务任务 |
+| 受控独立确认请求 | 600 | 并发 1/3/5，单 worker，批量 1/4，独立文件 |
+| 重复确认请求 | 100 | 幂等验证，与独立处理吞吐分开 |
+| 真实 Embedding 索引任务 | 10 | 仅统计完成的 M12 正式批次；不含 pilot |
+| M12 全范围完成 | True | 真实测量缺口会保留 |
+
+性能对照见 [CSV](docs/results/m12_comparison.csv) 和 [图表](docs/results/m12_latency.svg)。本次部署建议：`consider_batch4_after_real_capability_check`。批量减少请求次数不等于 Token 或费用同比减少，结果不预设提升比例。
+
+CI 工作流位于 `.github/workflows/health-m13.yml`，使用临时 pgvector 服务和受控模型，运行业务／引用回归、契约、一致性与进程故障检查。远端实际结果请查看仓库 Actions；提供工作流不等于远端已运行成功。
 
 ## 运行
 
-环境：Docker Desktop、Docker Compose，能够访问所配置模型服务的网络与 API Key。
-
-在项目根目录复制配置，并填写本机已经验证的服务地址、模型名和 Key：
+已有环境使用原来的 `.env`，无需重新导入数据：
 
 ```powershell
-Copy-Item .env.example .env
+docker compose -f compose.yaml -f compose.m11.yaml up -d db app worker
 ```
 
-配置生成、视觉与 Embedding 三组变量。向量维度须与模型返回结果一致；更换向量模型或维度后，应重新构建相应索引。
+M12 已选择批量 4 的环境，继续加 `-f compose.m12.yaml`。浏览器打开 `http://127.0.0.1:8000/`、`/upload` 和 `/docs`。启动后等待 `/health` 正常以及 `/api/tasks/worker` 的 `online=true`。
 
-全新数据库首次运行，依次执行：
+全新环境初始化见 [运行与恢复说明](docs/RUNBOOK_M13.md)；模型名、地域和 Key 以当前账户实际可用配置为准。受控 CI 不需要收费模型 Key。
+
+## 验证和演示
+
+在已完成 M12 的项目根目录执行：
 
 ```powershell
-docker compose up -d --build
-docker compose exec app python -m app.init_data
-docker compose exec app python -m app.migrate_m3
-docker compose exec app python -m app.m7_data seed
-docker compose exec app python -m app.m3_index --chunking fixed
-docker compose exec app python -m app.m3_index --chunking section
-docker compose exec app python -m app.m7_data snapshot
+. .\m13_bundle\HealthM13.ps1 -BatchSize 1
+Invoke-HealthM13 check --database
+Invoke-HealthM13 demo
+Invoke-HealthM13 recompute
 ```
 
-每条命令成功后再执行下一条。`init_data` 和 `m7_data seed` 仅导入经过逐字校验、明确标记为合成的固定测试数据；真实上传使用 `/upload` 核对确认。已有 M0～M6 数据的项目直接按 M7 指导增量操作。
+新克隆仅运行 CI 检查时，按 [运行说明](docs/RUNBOOK_M13.md) 使用一次性数据库；历史验收与 V0 不可重新创建后冒充原始证据。
 
-- [健康检查](http://localhost:8000/health)
-- [上传与核对](http://localhost:8000/upload)
-- [接口说明](http://localhost:8000/docs)
+三个演示包括正常上传与带引用问答、重复确认与真实进程中断恢复、指标修订与来源追溯。自动演示使用合成数据和受控抽取／生成，实际经过路由、数据库、索引、检索与引用校验。详见 [演示说明](docs/DEMO_M13.md)。
 
-## 接口
+## 范围
 
-| 接口 | 用途 |
-|---|---|
-| `GET /api/members` | 成员列表 |
-| `GET /api/reports?member_id=...` | 某成员已确认报告 |
-| `GET /api/metrics?member_id=...` | 某成员已确认指标 |
-| `POST /api/query` | 向量或混合检索实验入口 |
-| `POST /api/agent/query` | 工具调用和证据纠错问答 |
-| `GET /api/query/{query_id}/trace` | 读取本次问答日志 |
-| `POST /api/ingest/upload` | 上传文件并生成草稿 |
-| `GET /api/ingest/{report_id}?member_id=...` | 读取草稿或确认结果 |
-| `POST /api/ingest/{report_id}/confirm?member_id=...` | 核对后确认入库 |
+当前是本地单主机、单 worker 演示服务；成员范围过滤不是多租户鉴权。未验收生产容量、跨主机共享存储、高可用或生产安全。M12 负载使用进程内测试 worker，不包含生产每任务子进程启动开销，后者另做正确性探针。
 
-Agent 请求示例：
+M13 的工程测试数不是模型问答准确率，也没有新增真实问答质量百分比。原有问答评测文件和修复记录保留；历史 20 题结果不视为当前源码重新评测结果。真实模型用量仅覆盖明确完成的 Embedding 索引批次。
 
-```json
-{
-  "question": "验收甲10月15日的空腹血糖是多少？",
-  "member_ids": ["m7_member_a"],
-  "report_ids": ["m7_a_20261015"],
-  "chunk_version": "section200o40v1",
-  "retrieval_mode": "hybrid"
-}
-```
-
-Agent 使用 `member_ids` 列表；基础检索使用 `member_id`。回答状态为 `answered`、`partial`、`insufficient` 或 `clarify`。超时、数据库或模型故障走独立错误响应，不能把 HTTP 5xx 当成正常“没有记录”。
-
-## 数据与文件
-
-五张业务表：`family_members`、`reports`、`report_chunks`、`metrics`、`query_logs`。
-
-| 文件 | 职责 |
-|---|---|
-| `app/rag.py`、`app/retrieval.py` | 模型调用与检索 |
-| `app/chunking.py`、`app/text_search.py`、`app/rrf.py` | 切分、关键词检索与排名融合 |
-| `app/agent_tools.py`、`app/agent.py` | 工具协议、校验及循环 |
-| `app/evidence_guard.py` | 覆盖检查、一次补检索、引用校验和有限修订 |
-| `app/report_extract.py`、`app/report_ingest.py` | 文件抽取、草稿与事务入库 |
-| `app/m7_data.py`、`app/m7_eval.py` | 合成验收数据、逐题运行与结果汇总 |
-
-数据库通过 Compose 命名卷保存，原件和草稿通过 `./uploads:/app/uploads` 保存。上传目录和带真实资料的原始日志不进入代码仓库。`docker compose down` 可停止服务并保留命名卷；重新启动使用 `docker compose up -d`。
-
-## 评测
-
-已有 M2/M3 开发题和历史结果保留。M7 新增两个专用测试成员、12 份合成报告、36 条指标、20 道 Agent 验收题，以及 8 道原文检索对照题。新验收题须在冻结实现后首次运行；看过结果并据此改动后，再跑属于回归测试。
-
-离线回归检查：
-
-```powershell
-docker compose exec app python -m app.m5_check
-docker compose exec app python -m app.m6_check
-docker compose exec app python -m app.m7_check
-```
-
-真实模型与数据库验收：
-
-```powershell
-docker compose exec app python -m app.m7_eval run --label first-acceptance
-```
-
-结果保存在 `app/data/m7_runs/<本轮目录>/`。逐题核对 `results.json` 后，在 `manual_review.json` 填写三个字段：答案正确、引用支持对应结论、工具参数正确。再执行：
-
-```powershell
-docker compose exec app python -m app.m7_eval report --run-dir /app/app/data/m7_runs/本轮目录名
-```
-
-自动项只检查接口状态、来源真实性、范围、工具出现情况、证据覆盖和调用预算。语义正确性与完整参数正确性由人工核对；模型自评不作人工评分。
-
-检索实验沿用 M3：
-
-```powershell
-docker compose exec app python -m app.eval_m3 --dataset /app/app/data/eval_m7_retrieval.json --top-k 2
-```
-
-依次比较固定切分＋向量、章节切分＋向量、章节切分＋混合检索。使用相同题目、成员范围、模型及 `top_k`。原文字符区间的证据覆盖比例用于比较，不把它视为答案正确率。
-
-实测结果整理到 `docs/m7_acceptance.md`、`docs/m7_retrieval.md`。未运行前不填写通过率或提升比例。当前没有“关闭证据检查”的同条件实验，因此只展示纠错行为与终止预算，不声明其带来的准确率提升。
-
-## 演示与限制
-
-演示顺序见 `docs/m7_demo.md`：精确数值、跨报告组合、缺失资料，以及一份上传报告的核对入库与问答。
-
-第一版未提供账号授权系统、长期会话记忆、单位换算或复杂 OCR 版式支持；只验证当前实现支持的输入。小规模合成集结果用于解释项目行为，不能外推至真实医疗场景。
+实际上传文件、备份、Key 和逐次运行记录保留在本机；仓库公开结果仅包括选定汇总与合成演示说明。

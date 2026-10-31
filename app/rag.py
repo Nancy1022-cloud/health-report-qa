@@ -172,10 +172,14 @@ def run_query(question, member_id, report_ids=None, top_k=DEFAULT_TOP_K, with_an
               "llm_model": os.getenv("LLM_MODEL"), "with_answer": with_answer}]
     usage, evidence = {}, []
     error, error_code = None, None
+    no_records = False
     result = {"status": "insufficient", "answer": "该成员当前没有已确认的报告。", "citations": []}
     try:
         evidence = retrieve(question, member_id, report_ids, top_k, trace, usage,
                             chunk_version=chunk_version, retrieval_mode=retrieval_mode)
+        no_records = any(event.get("step") == "scope" and not event.get("report_ids") for event in trace)
+        if not evidence and not no_records:
+            result["answer"] = "当前检索到的资料不足以回答这个问题。"
         if not with_answer:
             result = {"status": "retrieved", "answer": None, "citations": []}
         elif evidence:
@@ -209,7 +213,9 @@ def run_query(question, member_id, report_ids=None, top_k=DEFAULT_TOP_K, with_an
     if error:
         raise HTTPException(error.status_code, {"code": error_code, "message": error.detail,
                                                "query_id": query_id}) from None
-    return {"query_id": query_id, **result, "evidence": evidence,
+    return {"query_id": query_id, **result, "result_code": ("no_records" if no_records else "insufficient_evidence")
+            if result["status"] == "insufficient" else "ok" if result["status"] == "answered" else "retrieval_only",
+            "evidence": evidence,
             "latency_ms": latency_ms, "token_usage": usage,
             "model_calls": sum(event["step"] in {"embedding_request", "generation_request"} for event in trace)}
 

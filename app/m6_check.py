@@ -118,6 +118,16 @@ class UploadChecks(unittest.TestCase):
             "title": BODY["title"], "report_date": BODY["report_date"], "report_type": BODY["report_type"],
             "raw_text": TEXT, "metrics": [METRIC], "warnings": [], "model_info": {"model": "mock"}})
         self.extractor.start()
+        # 这些是 M6 文件/边界单元检查，显式注入原服务和原数据库替身。
+        # M10 生产组合根与事务由 app.m10_check / m10_bundle 的数据库探针覆盖。
+        from app.services.reports import ReportService
+        def isolated_service():
+            repository = ingest.PostgresReportRepository(ingest.connect_db, review_reader=ingest.existing_review)
+            return ReportService(repository, ingest.DraftRepository(ingest.storage_root), ingest.inspect_file,
+                                 ingest.extract_report, ingest.prepare_chunks, member_checker=ingest.member_exists)
+        self.service_factory = patch.object(ingest, 'make_report_service', side_effect=isolated_service)
+        self.service_factory.start()
+        self.addCleanup(self.service_factory.stop)
         app = FastAPI(); app.include_router(router); self.client = TestClient(app)
 
     def tearDown(self):

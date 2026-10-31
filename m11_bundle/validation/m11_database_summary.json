@@ -1,0 +1,239 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "http_accept_202_without_model",
+      "passed": true,
+      "http": 202,
+      "task_id": "task_79b5fbe09c7d4abdbb6108a1034ba3e4"
+    },
+    {
+      "name": "duplicate_upload_task_reused",
+      "passed": true
+    },
+    {
+      "name": "task_scope_and_contract",
+      "passed": true,
+      "wrong_status": 404,
+      "wrong_body": {
+        "code": "resource_not_found",
+        "message": "资源不存在，或不属于本次指定成员。",
+        "request_id": "b333d6e670d14e36a7bc37927f804c7f",
+        "details": []
+      },
+      "invalid_status": 422,
+      "invalid_body": {
+        "code": "validation_error",
+        "message": "请求参数不符合接口约定。",
+        "request_id": "287ef77104504330a49b6ac1084526d4",
+        "details": [
+          {
+            "field": "header.Idempotency-Key",
+            "type": "missing"
+          }
+        ]
+      }
+    },
+    {
+      "name": "extract_and_draft_ready",
+      "passed": true
+    },
+    {
+      "name": "confirm_atomic_and_idempotent",
+      "passed": true,
+      "final_counts": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "completed_task_receipt_replay",
+      "passed": true
+    },
+    {
+      "name": "process_crash_before_external",
+      "passed": true,
+      "task_id": "task_499d2fd6ca494350b48ae510e51cd104",
+      "calls_reserved": 2,
+      "call_states": {
+        "ok": 1,
+        "unknown": 1
+      },
+      "attempts": 2,
+      "recovery_seconds": 4.188
+    },
+    {
+      "name": "process_crash_external_returned",
+      "passed": true,
+      "task_id": "task_750d060ce5674b5eb3701046fd7ea733",
+      "calls_reserved": 2,
+      "call_states": {
+        "ok": 1,
+        "unknown": 1
+      },
+      "attempts": 2,
+      "recovery_seconds": 4.627
+    },
+    {
+      "name": "unknown_call_not_faked_as_zero",
+      "passed": true
+    },
+    {
+      "name": "process_crash_stage_saved",
+      "passed": true,
+      "task_id": "task_60166ebf428c45ba88aa828d86f9f8c7",
+      "calls_reserved": 1,
+      "call_states": {
+        "ok": 1
+      },
+      "attempts": 2,
+      "recovery_seconds": 4.389
+    },
+    {
+      "name": "saved_stage_reused_stage_saved",
+      "passed": true
+    },
+    {
+      "name": "process_crash_before_commit",
+      "passed": true,
+      "task_id": "task_2e22b1150ed64bd88907676e8abcbd9c",
+      "calls_reserved": 1,
+      "call_states": {
+        "ok": 1
+      },
+      "attempts": 2,
+      "recovery_seconds": 4.374
+    },
+    {
+      "name": "saved_stage_reused_before_commit",
+      "passed": true
+    },
+    {
+      "name": "process_crash_after_commit",
+      "passed": true,
+      "task_id": "task_db8d8592e53c4af2ae043a1c57428bfc",
+      "calls_reserved": 1,
+      "call_states": {
+        "ok": 1
+      },
+      "attempts": 1,
+      "recovery_seconds": 1.46
+    },
+    {
+      "name": "index_crash_stage_saved",
+      "passed": true,
+      "calls_reserved": 1,
+      "attempts": 2,
+      "final_counts": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "index_crash_before_commit",
+      "passed": true,
+      "calls_reserved": 1,
+      "attempts": 2,
+      "final_counts": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "index_crash_after_commit",
+      "passed": true,
+      "calls_reserved": 1,
+      "attempts": 1,
+      "final_counts": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "parallel_claim_once",
+      "passed": true
+    },
+    {
+      "name": "second_worker_rejected",
+      "passed": true
+    },
+    {
+      "name": "supervisor_enforces_task_deadline",
+      "passed": true,
+      "elapsed_seconds": 1.04,
+      "calls_reserved": 0
+    },
+    {
+      "name": "late_old_generation_cannot_overwrite",
+      "passed": true,
+      "old_task": "task_d9aad4e76b4049c3a2af7da6390d42ad",
+      "new_task": "task_8ac9d6d4fd944cef89b8dde6de27f8a1",
+      "current_version": 2,
+      "final_counts": [
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "name": "late_same_task_token_rejected",
+      "passed": true
+    },
+    {
+      "name": "retry_temporary",
+      "passed": true,
+      "attempts": 2,
+      "calls_reserved": 2,
+      "error_code": null
+    },
+    {
+      "name": "retry_persistent",
+      "passed": true,
+      "attempts": 3,
+      "calls_reserved": 3,
+      "error_code": "attempt_budget"
+    },
+    {
+      "name": "retry_permanent",
+      "passed": true,
+      "attempts": 1,
+      "calls_reserved": 1,
+      "error_code": "upstream_http_403"
+    },
+    {
+      "name": "all_attempts_share_call_budget",
+      "passed": true
+    },
+    {
+      "name": "queue_time_counts_towards_deadline",
+      "passed": true
+    },
+    {
+      "name": "business_and_task_success_rollback_together",
+      "passed": true,
+      "final_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "persistent_rate_limit",
+      "passed": true
+    }
+  ],
+  "external_model_calls": 0,
+  "real_model_evaluation": "not_executed",
+  "scenarios": 29,
+  "environment": {
+    "schema": "m11_probe_9304cd574a7942dca968d937ceccebd4",
+    "external_model_calls": 0,
+    "postgresql": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "pgvector": "0.6.0"
+  },
+  "temporary_schema_cleaned": true
+}

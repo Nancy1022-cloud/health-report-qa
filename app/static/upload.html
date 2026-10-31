@@ -9,7 +9,7 @@ input[type=file]{max-width:100%}
 </style>
 </head>
 <body>
-<h1>健康报告 · 上传与核对 <span class="badge">M6</span></h1>
+<h1>健康报告 · 上传与核对 <span class="badge">M11</span></h1>
 <p class="hint">选择成员，上传报告，核对后保存。问答沿用 M5 的工具与证据检查。</p>
 <section>
 <h2>1. 上传报告</h2>
@@ -20,6 +20,8 @@ input[type=file]{max-width:100%}
 <details><summary>重新打开已有上传</summary><label for="draftId">上传 ID</label><input id="draftId" type="text" placeholder="upload_…"><button id="load" class="plain">打开</button></details>
 </section>
 <div id="status" role="status" aria-live="polite"></div>
+<section id="taskPanel"><h2>处理进度</h2><p class="hint">任务提交后由后台处理，刷新页面可继续查看。抽取完成后仍需人工核对。</p><pre id="taskState">尚未提交任务</pre>
+<label for="taskId">任务 ID（可粘贴此前保存的 ID）</label><input id="taskId" type="text" placeholder="task_…"><button id="resume" class="plain">继续查看任务</button><p id="workerState" class="hint"></p></section>
 <section id="reviewPanel" hidden>
 <h2>2. 对照原件核对</h2>
 <p id="identity" class="hint"></p><a id="original" target="_blank" rel="noopener">打开原始文件</a>
@@ -33,9 +35,11 @@ input[type=file]{max-width:100%}
 <div class="scroll"><table><thead><tr><th>指标名</th><th>metric_code</th><th>结果</th><th>单位</th><th>参考范围</th><th>来源原句</th><th>操作</th></tr></thead><tbody id="metrics"></tbody></table></div>
 <button id="add" class="plain">添加指标行</button>
 <label class="check"><input id="reviewed" type="checkbox"><span>我已对照原件核对成员、日期、报告文本及指标。</span></label>
+<div id="revisionReason" hidden><label for="reason">本次修订原因</label><input id="reason" type="text" maxlength="500"></div>
 <button id="confirm" disabled>确认并建立索引</button>
-<p class="hint">建索引可能需要一两分钟。失败后可以保留当前核对内容重试；确认成功后，此上传不能覆盖修改。</p>
+<p class="hint">建索引可能需要一两分钟。失败后可以保留当前核对内容重试；确认后可按当前版本修订；修订失败会保留已保存的版本。</p>
 </section>
+<section id="historyPanel" hidden><h2>版本与来源</h2><p class="hint">修订会保留首次抽取和历史确认记录。查询使用保存成功的版本。</p><button id="edit" class="plain">修订已确认内容</button><button id="history" class="plain">查看来源与修订记录</button><pre id="historyResult" hidden></pre></section>
 <section id="qaPanel" hidden>
 <h2>3. 查询刚上传的报告</h2>
 <p class="hint">本次查询固定使用上传时选定的成员和这份报告。</p>
@@ -45,20 +49,33 @@ input[type=file]{max-width:100%}
 </section>
 <script>
 const $=id=>document.getElementById(id);
-let current=null,busy=false;
+let current=null,busy=false,editing=false,writeAttempt=null,uploadAttempt=null,pending=null;
+const pendingKey='health_m11_pending';
+try{pending=JSON.parse(sessionStorage.getItem(pendingKey)||'null');}catch{}
+function rememberTask(task){pending={id:task.id,member_id:task.member_id};sessionStorage.setItem(pendingKey,JSON.stringify(pending));$('taskId').value=task.id;}
+function showTask(task){$('taskId').value=task.id;$('taskState').textContent=`任务：${task.id}\n报告：${task.report_id}\n状态：${task.status} / ${task.stage}\n尝试：${task.attempts}/${task.max_attempts} ｜ 调用预留：${task.calls_reserved}/${task.max_calls}\n原因：${task.error_code??'无'}`;}
+async function followTask(initial){let task=initial;rememberTask(task);for(let i=0;i<450;i++){showTask(task);if(['succeeded','failed','superseded'].includes(task.status)){pending=null;sessionStorage.removeItem(pendingKey);if(task.status!=='succeeded'){writeAttempt=null;uploadAttempt=null;throw new Error(`任务 ${task.status}：${task.error_code??'未提供原因'}。查看任务记录，修正原因后重新提交会创建新任务。`);}return task;}
+message('后台处理中，任务 ID 已记住，刷新页面后可继续查看。');await new Promise(r=>setTimeout(r,2000));task=await request(`/api/tasks/${encodeURIComponent(task.id)}?member_id=${encodeURIComponent(task.member_id)}`);}throw new Error('仍未取得终态，请稍后点“继续查看任务”。');}
+async function resumePending(){const id=$('taskId').value.trim()||pending?.id;const member=pending?.id===id?pending.member_id:$('member').value;if(!id||!member)throw new Error('请填写任务 ID 并选择对应成员。');const task=await followTask(await request(`/api/tasks/${encodeURIComponent(id)}?member_id=${encodeURIComponent(member)}`));$('member').value=task.member_id;render(await request(`/api/ingest/${encodeURIComponent(task.report_id)}?member_id=${encodeURIComponent(task.member_id)}`));message(task.kind==='extract'?'抽取已完成，请对照原件核对。':'保存已完成，当前版本已重新读取。');}
+
 const fields=['metric_name','metric_code','value','unit','reference_range','source_text'];
 function message(text,error=false){$('status').textContent=text;$('status').style.color=error?'#9b3030':'#175b4c';}
-function setBusy(value){busy=value;for(const id of ['upload','load','ask'])$(id).disabled=value;for(const el of $('reviewPanel').querySelectorAll('input,textarea,button'))el.disabled=value||current?.status==='confirmed';$('confirm').disabled=value||!$('reviewed').checked||current?.status==='confirmed';$('member').disabled=value;$('file').disabled=value;}
-async function request(url,options={}){const response=await fetch(url,{cache:'no-store',...options});const data=await response.json();if(!response.ok){const e=data.detail??data;throw new Error(typeof e==='string'?e:JSON.stringify(e,null,2));}return data;}
+function setBusy(value){busy=value;for(const id of ['upload','load','ask'])$(id).disabled=value||!!pending;$('resume').disabled=value;for(const el of $('reviewPanel').querySelectorAll('input,textarea,button'))el.disabled=value||(current?.status==='confirmed'&&!editing);$('confirm').disabled=value||!!pending||!$('reviewed').checked||(current?.status==='confirmed'&&!editing);$('member').disabled=value;$('file').disabled=value;}
+async function request(url,options={}){const response=await fetch(url,{cache:'no-store',...options});const data=await response.json();if(!response.ok){if(data.code&&data.message){throw new Error(`${data.message}\n错误码：${data.code}\n请求编号：${data.request_id??response.headers.get('X-Request-ID')??'未提供'}`);}const e=data.detail??data;throw new Error(typeof e==='string'?e:JSON.stringify(e,null,2));}return data;}
 function addRow(data={}){const row=document.createElement('tr');for(const key of fields){const cell=document.createElement('td');const input=document.createElement(key==='source_text'?'textarea':'input');if(key!=='source_text')input.type='text';input.dataset.key=key;input.value=data[key]??'';if(key==='source_text')input.rows=2;cell.append(input);row.append(cell);}const cell=document.createElement('td');const button=document.createElement('button');button.textContent='删除';button.className='plain';button.type='button';button.onclick=()=>row.remove();cell.append(button);row.append(cell);$('metrics').append(row);}
-function render(data){current=data;$('reviewPanel').hidden=false;$('qaPanel').hidden=data.status!=='confirmed';$('identity').textContent=`成员：${data.member_id} ｜ 上传 ID：${data.id} ｜ 状态：${data.status}`;$('draftId').value=data.id;$('original').href=data.file_url;$('title').value=data.title;$('date').value=data.report_date??'';$('type').value=data.report_type;$('text').value=data.raw_text;$('extracted').textContent=data.extracted_text??data.raw_text;$('warnings').textContent=(data.warnings??[]).join('\n');$('warnings').hidden=!$('warnings').textContent;$('metrics').replaceChildren();for(const m of data.metrics)addRow(m);$('reviewed').checked=false;for(const el of $('reviewPanel').querySelectorAll('input,textarea,button'))el.disabled=data.status==='confirmed';$('confirm').disabled=true;$('answer').textContent='';$('response').textContent='';$('trace').hidden=true;}
+function render(data){editing=false;writeAttempt=null;current=data;$('revisionReason').hidden=true;$('reason').value='';$('confirm').textContent='确认并建立索引';$('historyPanel').hidden=data.status!=='confirmed';$('historyResult').hidden=true;$('reviewPanel').hidden=false;$('qaPanel').hidden=data.status!=='confirmed';$('identity').textContent=`成员：${data.member_id} ｜ 上传 ID：${data.id} ｜ 状态：${data.status} ｜ 已保存版本：${data.report_version??"待确认"}`;$('draftId').value=data.id;$('original').href=data.file_url;$('title').value=data.title;$('date').value=data.report_date??'';$('type').value=data.report_type;$('text').value=data.raw_text;$('extracted').textContent=data.extracted_text??data.raw_text;$('warnings').textContent=(data.warnings??[]).join('\n');$('warnings').hidden=!$('warnings').textContent;$('metrics').replaceChildren();for(const m of data.metrics)addRow(m);$('reviewed').checked=false;for(const el of $('reviewPanel').querySelectorAll('input,textarea,button'))el.disabled=data.status==='confirmed';$('confirm').disabled=true;$('answer').textContent='';$('response').textContent='';$('trace').hidden=true;}
 async function run(action){if(busy)return;setBusy(true);try{await action();}catch(e){message(e.message,true);}finally{setBusy(false);}}
-$('upload').onclick=()=>run(async()=>{if(!$('member').value||!$('file').files[0])throw new Error('请选择成员和文件。');message('正在读取报告并抽取候选字段…');const form=new FormData();form.append('member_id',$('member').value);form.append('file',$('file').files[0]);const data=await request('/api/ingest/upload',{method:'POST',body:form});render(data);message('抽取完成。此时仍是草稿，请打开原件核对。');});
+$('upload').onclick=()=>run(async()=>{if(!$('member').value||!$('file').files[0])throw new Error('请选择成员和文件。');message('正在提交报告处理任务…');const form=new FormData();form.append('member_id',$('member').value);form.append('file',$('file').files[0]);if(!uploadAttempt)uploadAttempt=crypto.randomUUID();const task=await followTask(await request('/api/tasks/upload',{method:'POST',headers:{'Idempotency-Key':uploadAttempt},body:form}));uploadAttempt=null;render(await request(`/api/ingest/${task.report_id}?member_id=${encodeURIComponent(task.member_id)}`));message('抽取完成，请对照原件核对后确认。');});
 $('load').onclick=()=>run(async()=>{if(!$('member').value)throw new Error('请先选择成员。');const data=await request(`/api/ingest/${encodeURIComponent($('draftId').value.trim())}?member_id=${encodeURIComponent($('member').value)}`);render(data);message('已打开上传记录。');});
 $('reviewed').onchange=()=>setBusy(busy);
 $('add').onclick=()=>addRow();
-$('confirm').onclick=()=>run(async()=>{if(!current||!$('reviewed').checked)throw new Error('请先完成核对并勾选确认。');if(!$('date').value)throw new Error('请填写明确的检查日期。');const metrics=[...$('metrics').rows].map(row=>Object.fromEntries(fields.map(key=>[key,row.querySelector(`[data-key="${key}"]`).value])));for(const m of metrics)if(!m.reference_range)m.reference_range=null;const body={title:$('title').value,report_date:$('date').value,report_type:$('type').value,raw_text:$('text').value,metrics,reviewed:true};message('正在为这份报告建立两种版本的索引，请等待…');const data=await request(`/api/ingest/${current.id}/confirm?member_id=${encodeURIComponent(current.member_id)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const saved=await request(`/api/ingest/${current.id}?member_id=${encodeURIComponent(current.member_id)}`);render(saved);message('确认成功。报告、指标和索引已保存，可以提问。\n'+JSON.stringify(data,null,2));});
+$('confirm').onclick=()=>run(async()=>{if(!current||!$('reviewed').checked)throw new Error('请先完成核对并勾选确认。');if(!$('date').value)throw new Error('请填写明确的检查日期。');const metrics=[...$('metrics').rows].map(row=>Object.fromEntries(fields.map(key=>[key,row.querySelector(`[data-key="${key}"]`).value])));for(const m of metrics)if(!m.reference_range)m.reference_range=null;const body={title:$('title').value,report_date:$('date').value,report_type:$('type').value,raw_text:$('text').value,metrics,reviewed:true};message('正在为这份报告建立两种版本的索引，请等待…');const payload=editing?{expected_version:current.report_version,reason:$('reason').value,review:body}:body;if(editing&&!payload.reason.trim())throw new Error('请填写修订原因。');const serialized=JSON.stringify(payload);if(!writeAttempt||writeAttempt.body!==serialized)writeAttempt={body:serialized,key:crypto.randomUUID()};const url=editing?`/api/tasks/reports/${current.id}/revisions`:`/api/tasks/reports/${current.id}/confirm`;const data=await followTask(await request(`${url}?member_id=${encodeURIComponent(current.member_id)}`,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':writeAttempt.key},body:serialized}));const saved=await request(`/api/ingest/${current.id}?member_id=${encodeURIComponent(current.member_id)}`);render(saved);message('确认成功。报告、指标和索引已保存，可以提问。\n'+JSON.stringify(data,null,2));});
 $('ask').onclick=()=>run(async()=>{if(!current||current.status!=='confirmed')throw new Error('请先确认报告。');if(!$('question').value.trim())throw new Error('请填写问题。');message('正在调用工具查询本报告…');$('answer').textContent='';$('trace').hidden=true;const data=await request('/api/agent/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:$('question').value.trim(),member_ids:[current.member_id],report_ids:[current.id],chunk_version:'section200o40v1',retrieval_mode:'hybrid'})});$('answer').textContent=data.answer??JSON.stringify(data);$('response').textContent=JSON.stringify(data,null,2);if(data.query_id){$('trace').href=`/api/query/${encodeURIComponent(data.query_id)}/trace`;$('trace').hidden=false;}message('问答完成，来源和状态见下方。');});
-request('/api/ingest/members').then(data=>{for(const m of data){const option=document.createElement('option');option.value=m.id;option.textContent=m.name;$('member').append(option);}}).catch(e=>message(e.message,true));
+$('edit').onclick=()=>{if(!current||busy)return;editing=true;$('revisionReason').hidden=false;$('reviewed').checked=false;$('confirm').textContent='保存修订并重建索引';setBusy(false);message('请对照原件修改内容、填写修订原因并重新勾选核对。');};
+$('history').onclick=()=>run(async()=>{const data=await request(`/api/reports/${current.id}/provenance?member_id=${encodeURIComponent(current.member_id)}`);$('historyResult').textContent=JSON.stringify(data,null,2);$('historyResult').hidden=false;message('已读取首次抽取与各次确认记录。');});
+$('resume').onclick=()=>run(resumePending);
+$('file').onchange=()=>{uploadAttempt=null;};
+request('/api/tasks/worker').then(data=>{$('workerState').textContent=data.online?'后台处理服务在线。':'后台处理服务暂未在线，已接受的任务会保留在队列中；请启动 worker。';}).catch(()=>{$('workerState').textContent='暂未取得后台处理状态。';});
+request('/api/ingest/members').then(data=>{for(const m of data){const option=document.createElement('option');option.value=m.id;option.textContent=m.name;$('member').append(option);}if(pending){$('member').value=pending.member_id;$('taskId').value=pending.id;run(resumePending);}}).catch(e=>message(e.message,true));
 </script>
 </body></html>

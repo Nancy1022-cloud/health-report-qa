@@ -1,0 +1,22 @@
+{
+  "scope": "package validation with synthetic local database and explicitly marked prior-evidence fixtures; not user acceptance",
+  "offline_tests": 228,
+  "offline_passed": true,
+  "database_scenarios_total": 86,
+  "m11_task_scenarios": 29,
+  "database_passed": true,
+  "temporary_schemas_cleaned": true,
+  "shared_business_rows_unchanged": true,
+  "external_model_calls": 0,
+  "real_model_evaluation": "not_executed",
+  "postgresql": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+  "pgvector": "0.6.0",
+  "python": "3.12.14",
+  "api_worker_integration_passed": true,
+  "migration_rehearsal_passed": true,
+  "technical_gate_passed": true,
+  "user_manual_review_completed": false,
+  "windows_powershell_executed_here": false,
+  "docker_engine_executed_here": false,
+  "source_and_harness_identity_verified": true
+}

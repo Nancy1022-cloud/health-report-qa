@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-31",
+  "region": "cn-beijing",
+  "currency": "CNY",
+  "price_source": "https://help.aliyun.com/zh/model-studio/model-pricing",
+  "embedding_api_source": "https://help.aliyun.com/zh/model-studio/text-embedding-synchronous-api/",
+  "method": "standard synchronous list price; no cache, Batch API, free quota or promotion discount; estimate only",
+  "models": {
+    "qwen3.8-flash": [{"max_input_tokens": 1000000, "input_per_million": 0.8, "output_per_million": 2.7}],
+    "qwen3.7-flash": [{"max_input_tokens": 32000, "input_per_million": 0.2, "output_per_million": 0.8}, {"max_input_tokens": 256000, "input_per_million": 0.6, "output_per_million": 2.4}, {"max_input_tokens": 1000000, "input_per_million": 1.2, "output_per_million": 4.8}],
+    "qwen3.7-text-embedding-flash": [{"max_input_tokens": 128000, "input_per_million": 0.125, "output_per_million": 0}],
+    "qwen3.7-text-embedding": [{"max_input_tokens": 128000, "input_per_million": 0.5, "output_per_million": 0}],
+    "text-embedding-v4": [{"max_input_tokens": 81920, "input_per_million": 0.5, "output_per_million": 0}]
+  }
+}

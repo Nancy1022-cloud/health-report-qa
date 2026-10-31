@@ -1,0 +1,55 @@
+name: Health M13 engineering
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  engineering:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      db:
+        image: pgvector/pgvector:0.8.7-pg16
+        env:
+          POSTGRES_DB: health_ci
+          POSTGRES_USER: health_ci
+          POSTGRES_PASSWORD: synthetic_ci_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U health_ci -d health_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      POSTGRES_DB: health_ci
+      POSTGRES_USER: health_ci
+      POSTGRES_PASSWORD: synthetic_ci_password
+      EMBEDDING_DIMENSIONS: '1024'
+      UPLOAD_DIR: /tmp/health_m13_ci_uploads
+      M13_CI_DISPOSABLE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Controlled business, contract, consistency and process-recovery checks
+        run: python m13_bundle/run_m13.py ci
+      - name: Retain synthetic engineering evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: M13-engineering-${{ github.run_id }}
+          path: artifacts/m13/
+          if-no-files-found: warn
+          retention-days: 14

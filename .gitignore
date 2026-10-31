@@ -54,3 +54,14 @@ samples/*
 # Working templates
 /README_M7.md
 /gitignore_m7.txt
+
+# M13 local evidence and private backups
+/app/data/m8/
+/app/data/m9/
+/app/data/m10/
+/app/data/m11/
+/app/data/m12/
+/app/data/m13/
+/artifacts/
+/Health_Report_*acceptance_materials.zip
+/M13-ci.zip

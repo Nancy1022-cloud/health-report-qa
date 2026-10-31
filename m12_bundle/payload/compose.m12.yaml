@@ -1,0 +1,9 @@
+# Optional: enable only after the local comparison and real capability probe.
+# Use together with compose.yaml and compose.m11.yaml.
+services:
+  app:
+    environment:
+      M12_EMBEDDING_BATCH_SIZE: "4"
+  worker:
+    environment:
+      M12_EMBEDDING_BATCH_SIZE: "4"

@@ -4,6 +4,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from app.db import connect_db
+from app.write_guard import require_legacy_database
 
 APP_DIR = Path(__file__).resolve().parent
 
@@ -35,6 +36,7 @@ def load_demo():
 
 
 def import_demo(conn, data):
+    require_legacy_database(conn)
     inserted = {"members": 0, "reports": 0, "metrics": 0}
     for member in data["members"]:
         row = conn.execute(

@@ -1,0 +1,22 @@
+{
+  "validation_source": "Reconstructed published fe9a983a project plus original M8-M12 payloads; temporary test fixtures are explicitly synthetic",
+  "offline_checks_passed": true,
+  "unit_tests": 317,
+  "prior_tests": 284,
+  "new_M13_tests": 33,
+  "external_model_calls": 0,
+  "subprocess_external_network_guard_exercised": true,
+  "python_syntax_checked": true,
+  "workflow_structure_checked": true,
+  "real_PostgreSQL_probes_executed": false,
+  "Docker_executed": false,
+  "Windows_PowerShell_executed": false,
+  "remote_GitHub_Actions_executed": false,
+  "user_acceptance_prefilled": false,
+  "limitations": "Database probes, restore drill, pages and remote CI must run in the user environment. This is package validation, not user acceptance.",
+  "powershell_script_UTF8_BOM_verified": true,
+  "normalized_script_digest_unchanged": true,
+  "recovery_assertions_match_original": true,
+  "preserved_M11_probe_sha256": "c96dcac5e7a1290933b015671049b12402eee5fd1950ddc020f9c4635c929681",
+  "recovery_database_probe_executed": false
+}

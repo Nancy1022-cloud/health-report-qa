@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>健康报告资料查询</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f5f8f8;color:#17343e;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}
+    main{max-width:920px;margin:52px auto;padding:0 20px}h1{margin:8px 0;font-size:clamp(26px,5vw,36px)}h2{margin:0 0 10px;font-size:20px}
+    .intro{color:#52696f;margin:0 0 28px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    section{background:#fff;border:1px solid #d9e4e4;border-radius:12px;padding:24px;margin-bottom:20px}p{margin:8px 0 18px}
+    a{color:#0c665e}a.action,button{display:inline-block;padding:10px 17px;border:0;border-radius:7px;background:#0c665e;color:white;font:inherit;text-decoration:none;cursor:pointer}
+    a.secondary{background:#e9efef;color:#17343e}button:disabled{opacity:.6;cursor:wait}a:focus-visible,button:focus-visible{outline:3px solid #d79525;outline-offset:3px}
+    .hint{font-size:14px;color:#52696f}.status{font-weight:600}.ok{color:#175b4c}.error{color:#9b3030}
+    pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f5;padding:14px;border-radius:6px;font-size:14px}summary{cursor:pointer}
+    @media(max-width:650px){main{margin:28px auto;padding:0 14px}.grid{grid-template-columns:1fr;gap:0}section{padding:20px}}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>健康报告资料查询</h1>
+    <p class="intro">按家庭成员整理报告，核对后保存，查询时查看对应来源。</p>
+    <div class="grid">
+      <section>
+        <h2>上传、核对与问答</h2>
+        <p>选择成员后上传报告，核对日期、文本和指标。确认保存后，可以查询这份报告。</p>
+        <a class="action" href="/upload">打开报告上传与核对</a>
+      </section>
+      <section>
+        <h2>接口与资料查询</h2>
+        <p>查看已有成员、报告和指标的查询接口，以及问答请求的输入和返回格式。</p>
+        <a class="action secondary" href="/docs">查看接口说明</a>
+      </section>
+    </div>
+    <section>
+      <h2>服务状态</h2>
+      <p id="status" class="status" role="status" aria-live="polite">正在检查服务和数据库…</p>
+      <button id="refresh" type="button">重新检查</button>
+      <p class="hint">此检查只读取服务与数据库状态。上传、确认和问答在相应页面手动发起。</p>
+      <details><summary>状态详情</summary><pre id="details">等待返回…</pre></details>
+    </section>
+  </main>
+  <script>
+    const status = document.getElementById('status');
+    const details = document.getElementById('details');
+    const refresh = document.getElementById('refresh');
+    async function checkHealth() {
+      refresh.disabled = true;
+      status.className = 'status';
+      status.textContent = '正在检查服务和数据库…';
+      try {
+        const response = await fetch('/health', {cache: 'no-store', signal: AbortSignal.timeout(15000)});
+        const text = await response.text();
+        let data;
+        try { data = JSON.parse(text); } catch { throw new Error('状态接口未返回 JSON，HTTP ' + response.status); }
+        details.textContent = JSON.stringify(data, null, 2);
+        if (!response.ok || data.status !== 'ok') throw new Error('健康检查未通过，HTTP ' + response.status);
+        status.textContent = '服务与数据库正常';
+        status.className = 'status ok';
+      } catch (error) {
+        status.textContent = '检查失败：' + error.message;
+        status.className = 'status error';
+      } finally {
+        refresh.disabled = false;
+      }
+    }
+    refresh.addEventListener('click', checkHealth);
+    checkHealth();
+  </script>
+</body>
+</html>

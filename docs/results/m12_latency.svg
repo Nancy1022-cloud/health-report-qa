@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="365" viewBox="0 0 780 365">
+<rect width="100%" height="100%" fill="#f7f9fc"/>
+<g font-family="Arial,sans-serif" fill="#172b4d">
+<text x="30" y="34" font-size="20">Controlled index tasks: median end-to-end latency</text>
+<text x="30" y="60" font-size="13">Blue: single input; teal: four inputs/request. Lower is faster. Unit: ms.</text>
+<text x="30" y="108" font-size="13">C=1, n=100/100</text>
+<rect x="190" y="94" width="55.03" height="18" rx="3" fill="#3159cc"/>
+<text x="255.03" y="108" font-size="12">1138.1</text>
+<rect x="190" y="119" width="16.16" height="18" rx="3" fill="#008b86"/>
+<text x="216.16" y="133" font-size="12">334.3</text>
+<text x="30" y="193" font-size="13">C=3, n=100/100</text>
+<rect x="190" y="179" width="182.57" height="18" rx="3" fill="#3159cc"/>
+<text x="382.57" y="193" font-size="12">3775.8</text>
+<rect x="190" y="204" width="60.79" height="18" rx="3" fill="#008b86"/>
+<text x="260.79" y="218" font-size="12">1257.2</text>
+<text x="30" y="278" font-size="13">C=5, n=100/100</text>
+<rect x="190" y="264" width="390.00" height="18" rx="3" fill="#3159cc"/>
+<text x="590.00" y="278" font-size="12">8065.8</text>
+<rect x="190" y="289" width="183.22" height="18" rx="3" fill="#008b86"/>
+<text x="383.22" y="303" font-size="12">3789.3</text>
+</g></svg>

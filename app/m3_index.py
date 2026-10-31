@@ -10,12 +10,14 @@ from app.chunking import VERSIONS, chunk_text
 from app.db import connect_db
 from app.rag import embed_texts, embedding_config, vector_literal
 from app.text_search import SEARCH_VERSION, tokenize
+from app.write_guard import require_legacy_database
 
 
 def build_index(chunking="fixed", force_embedding=False):
     version = VERSIONS[chunking]
     model, dimensions = embedding_config()
     with connect_db() as conn:
+        require_legacy_database(conn)
         conn.row_factory = dict_row
         reports = conn.execute("SELECT id, raw_text FROM reports WHERE status='confirmed' ORDER BY id").fetchall()
         cached = [] if force_embedding else conn.execute(

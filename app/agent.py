@@ -280,7 +280,9 @@ async def run_agent(question, member_ids, report_ids=None, *, chunk_version="sec
     if error:
         raise HTTPException(error.status_code, {"code": error_code, "message": error.detail,
                                                "query_id": query_id}) from None
-    return {"query_id": query_id, **result, "evidence": list(available.values()),
+    return {"query_id": query_id, **result, "result_code": "no_records" if m5["answer_mode"] == "no_reports" else
+            {"answered": "ok", "partial": "partial_answer", "clarify": "clarification_required",
+             "insufficient": "insufficient_evidence"}[result["status"]], "evidence": list(available.values()),
             "tool_calls": tool_calls, "llm_calls": llm_calls, "embedding_calls": embedding_calls,
             "latency_ms": latency_ms, "token_usage": usage, "evidence_check": m5,
             "supplemental_calls": m5["supplemental_calls"], "revision_calls": m5["revision_calls"],

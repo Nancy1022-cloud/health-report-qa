@@ -1,0 +1,25 @@
+# 与 compose.yaml 一起使用；API 与 worker 共享 app、uploads 和 PostgreSQL。
+services:
+  worker:
+    build: .
+    init: true
+    command: ["python", "-m", "app.task_worker"]
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+    volumes:
+      - ./app:/app/app
+      - ./uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    stop_grace_period: 10s
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.task_worker", "--healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

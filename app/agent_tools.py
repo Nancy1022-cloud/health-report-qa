@@ -124,11 +124,11 @@ def get_report_list(args, ids):
     with connect_db() as conn:
         conn.row_factory = dict_row
         rows = conn.execute("SELECT r.id AS report_id, r.member_id, r.title, "
-                            "r.report_date, r.report_type FROM reports r WHERE " + where +
+                            "r.report_date, r.report_type, r.data_version AS report_version FROM reports r WHERE " + where +
                             " ORDER BY r.report_date, r.id", params).fetchall()
     for row in rows:
         row["report_date"] = row["report_date"].isoformat()
-        row["source_id"] = "report:" + row["report_id"]
+        row["source_id"] = f"report:{row['report_id']}:v{row.get('report_version',1)}"
         row["content"] = f"报告：{row['title']}；日期：{row['report_date']}；类型：{row['report_type']}。"
     return {"status": "ok" if rows else "empty", "items": rows}
 
@@ -140,8 +140,8 @@ def get_metric_trend(args, ids):
         rows = conn.execute(
             "SELECT m.id, m.report_id, r.member_id, r.title, r.report_date, "
             "m.metric_code, m.metric_name, m.value::text AS value, m.unit, "
-            "m.reference_range, m.source_text FROM metrics m JOIN reports r ON r.id=m.report_id "
-            "WHERE " + where + " AND m.confirmed=TRUE AND m.metric_code=%s "
+            "m.reference_range, m.source_text, m.data_version AS report_version FROM metrics m JOIN reports r ON r.id=m.report_id "
+            "WHERE " + where + " AND m.confirmed=TRUE AND m.data_version=r.data_version AND m.metric_code=%s "
             "ORDER BY r.report_date DESC, r.id DESC", [*params, args.metric_code],
         ).fetchall()
     if args.latest_n and len(rows) > args.latest_n:

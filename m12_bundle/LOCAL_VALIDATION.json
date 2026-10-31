@@ -1,0 +1,24 @@
+{
+  "scope": "Package validation; not the user M12 acceptance or performance result",
+  "offline_tests": 284,
+  "offline_passed": true,
+  "new_m12_checks": 56,
+  "python": "3.12.14",
+  "packages": {
+    "fastapi": "0.143.1",
+    "pydantic": "2.14.1",
+    "psycopg": "3.3.6",
+    "openai": "2.54.0",
+    "httpx": "0.28.1"
+  },
+  "source_and_harness_hashes_verified": true,
+  "controlled_http_sdk_test_passed": true,
+  "report_statistics_tests_passed": true,
+  "database_probes_executed_here": false,
+  "docker_executed_here": false,
+  "windows_powershell_executed_here": false,
+  "real_model_calls": 0,
+  "real_model_usage_measured": false,
+  "user_M9_V0_modified": false,
+  "user_M12_acceptance_generated": false
+}

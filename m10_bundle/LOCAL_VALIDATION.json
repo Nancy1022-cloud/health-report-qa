@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "offline_tests": 188,
+  "installer_reference": "M9 exact known source and explicit acceptance/V0 test fixtures",
+  "installer_preflight": "m9_ready",
+  "installed_state": "applied",
+  "rollback_state": "m9_ready",
+  "python_syntax": "passed",
+  "javascript_syntax": "passed",
+  "sql_grammar": "passed",
+  "constant_sql_statements_parsed": 135,
+  "real_postgresql_validation": "not_executed_here_run_rehearse_migrate_verify_on_local_docker",
+  "external_model_calls": 0
+}

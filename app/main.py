@@ -8,12 +8,15 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from openai import APIConnectionError, APIError, APIStatusError, APITimeoutError
 
+from app.api_errors import install_api_contract
+from app.schemas.responses import HealthResponse, LLMTestResponse, EmbeddingTestResponse, ERROR_RESPONSES
 from app.db import database_status, init_db
 from app.llm import test_embedding, test_llm
 from app.record_routes import router as record_router
 from app.query_routes import router as query_router
 from app.agent_routes import router as agent_router
 from app.upload_routes import router as upload_router
+from app.task_routes import router as task_router
 
 @asynccontextmanager
 async def lifespan(app):
@@ -21,12 +24,13 @@ async def lifespan(app):
     yield
 
 
-app = FastAPI(title="健康报告智能检索问答", version="0.0.1", lifespan=lifespan)
+app = FastAPI(title="健康报告智能检索问答", version="0.12.0", lifespan=lifespan, responses=ERROR_RESPONSES)
 INDEX_FILE = Path(__file__).parent / "static" / "index.html"
 app.include_router(record_router)
 app.include_router(query_router)
 app.include_router(agent_router)
 app.include_router(upload_router)
+app.include_router(task_router)
 
 
 @app.get("/", include_in_schema=False)
@@ -34,14 +38,14 @@ def home():
     return FileResponse(INDEX_FILE)
 
 
-@app.get("/health")
+@app.get("/health", response_model=HealthResponse)
 def health():
     try:
         db = database_status()
     except (psycopg.Error, RuntimeError):
         raise HTTPException(status_code=503, detail="数据库或 pgvector 异常，请查看 app、db 日志。") from None
     # 这里真实查询数据库；不调用收费的外部模型。
-    return {"status": "ok", "stage": "M2", "database": db}
+    return {"status": "ok", "stage": "M12", "database": db}
 
 
 def run_model_test(test_func):
@@ -65,12 +69,12 @@ def run_model_test(test_func):
         raise HTTPException(status_code=502, detail="模型响应格式或向量维度异常，请检查服务与模型配置。") from None
 
 
-@app.post("/api/dev/test-llm")
+@app.post("/api/dev/test-llm", response_model=LLMTestResponse)
 def check_llm():
     return run_model_test(test_llm)
 
 
-@app.post("/api/dev/test-embedding")
+@app.post("/api/dev/test-embedding", response_model=EmbeddingTestResponse)
 def check_embedding():
     return run_model_test(test_embedding)
 
@@ -83,3 +87,6 @@ async def add_json_charset(request, call_next):
         response.headers["content-type"] = "application/json; charset=utf-8"
 
     return response
+
+
+install_api_contract(app)

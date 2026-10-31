@@ -1,0 +1,25 @@
+{
+  "version": "m13.v1.1",
+  "application_changes": false,
+  "files": {
+    "HealthM13.ps1": "27efcdc96d00d0a47ff1871d0eedfaeab67f9fa69726da357a4d809f7461915c",
+    "README_TEMPLATE.md": "7f7ebc76ff32f2c4b03e59b6a529b518bfd9835e87a5159ae6dc89379621f9bb",
+    "demo_probe.py": "78d525f8ed4000d3db4259ff024159f0171917b22bae9446be682a5c6ff73495",
+    "netguard/sitecustomize.py": "850c6dd9eff9f10d9766a1190e765ad94a99a93b3095a804a1a074dce525545e",
+    "payload/.github/workflows/health-m13.yml": "7aa529cb8e3eef69d01dc4362343857f6464efca6a976f976898e90a9b192842",
+    "payload/docs/DEMO_M13.md": "1a5691f795c44a783e642e7a9c10401ce8ff2fcba02d70b648a7df20db6d6b51",
+    "payload/docs/RUNBOOK_M13.md": "f33c0feaaa85df890892aecfd30610da1842d906b5d8519e4308c3d1e3dfd3ff",
+    "recovery_probe.py": "6c1f017dd7ee61a151605801ad5f7902d7a4732206e8ad5cc9996bf3de123bb7",
+    "recovery_support.py": "1d62368a88f98f17aed53a48caab4f90b3159ec16afeeb7f448755f9ba783b9a",
+    "run_m13.py": "8e9c2f57a9d58794e9202164e831d2c4de3f963b03a1375bd7b0bbcd17439f7b",
+    "storage.py": "1c10edec553ca98f658a68f0e330fbbd18fe0f61018adacabf68ebedb6b56385",
+    "tests/test_m13.py": "675df5ee626646c8c39455d90a789cf55353ee676c9c979b935cae70ab14c7c5",
+    "tests/test_recovery_support.py": "d4469de6f585dae7af66e8c21f6055bc82b3ecba03ce424cbdcad9a5a1470a0d",
+    "validation/offline_tests.txt": "5a21d4a14f048e81a28e1c881fbaf66b22c01ce45755469c49bbe7616bfd4982"
+  },
+  "payload": {
+    ".github/workflows/health-m13.yml": "7aa529cb8e3eef69d01dc4362343857f6464efca6a976f976898e90a9b192842",
+    "docs/DEMO_M13.md": "1a5691f795c44a783e642e7a9c10401ce8ff2fcba02d70b648a7df20db6d6b51",
+    "docs/RUNBOOK_M13.md": "f33c0feaaa85df890892aecfd30610da1842d906b5d8519e4308c3d1e3dfd3ff"
+  }
+}
